@@ -6,10 +6,10 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         
-        player_walk_1 = pygame.image.load('image/walk 1.webp').convert_alpha()
-        player_walk_2 = pygame.image.load('image/walk 2.webp').convert_alpha()
-        player_walk_3 = pygame.image.load('image/walk 3.webp').convert_alpha()
-        player_walk_4 = pygame.image.load('image/walk 4.webp').convert_alpha()
+        player_walk_1 = pygame.image.load('E:\Projects\Pygame\\2D Runner\image\walk 1.webp').convert_alpha()
+        player_walk_2 = pygame.image.load('E:\Projects\Pygame\\2D Runner\image\walk 2.webp').convert_alpha()
+        player_walk_3 = pygame.image.load('E:\Projects\Pygame\\2D Runner\image\walk 3.webp').convert_alpha()
+        player_walk_4 = pygame.image.load('E:\Projects\Pygame\\2D Runner\image\walk 4.webp').convert_alpha()
 
         self.player_walk = [player_walk_1, player_walk_2, player_walk_3, player_walk_4]
         self.player_jump = player_walk_1
@@ -20,7 +20,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft = (30,220))
         self.gravity = 0
 
-        self.jump_sound = pygame.mixer.Sound('music/jump.wav')
+        self.jump_sound = pygame.mixer.Sound('E:\Projects\Pygame\\2D Runner\music\jump.wav')
         self.jump_sound.set_volume(0.5)
 
     def player_input(self):
@@ -57,13 +57,13 @@ class Obstacle(pygame.sprite.Sprite):
         super().__init__()
 
         if type == 'fly':
-            fly = pygame.image.load('image/fly.jpeg').convert_alpha()
+            fly = pygame.image.load('E:\Projects\Pygame\\2D Runner\image\\fly.jpeg').convert_alpha()
             fly = pygame.transform.rotozoom(fly,0,0.15).convert_alpha()
             y_pos = 100
             self.frame = fly
 
         else:
-            enemy = pygame.image.load('image/enemy(s).png').convert_alpha()
+            enemy = pygame.image.load('E:\Projects\Pygame\\2D Runner\image\enemy(s).png').convert_alpha()
             y_pos = 225
             self.frame = enemy
 
@@ -94,17 +94,17 @@ screen = pygame.display.set_mode((width,height))
 pygame.display.set_caption('Runner')
 clock = pygame.time.Clock()  
 test_font = pygame.font.SysFont( 'arial' , 20)
-bg_music = pygame.mixer.Sound('music/background.wav')
-over = pygame.mixer.Sound('music/over.wav')
-start = pygame.mixer.Sound('music/start.wav')
+bg_music = pygame.mixer.Sound('E:\Projects\Pygame\\2D Runner\music\\background.wav')
+over = pygame.mixer.Sound('E:\Projects\Pygame\\2D Runner\music\over.wav')
+start = pygame.mixer.Sound('E:\Projects\Pygame\\2D Runner\music\start.wav')
 bg_music.set_volume(0.5)
 bg_music.play(loops = -1)
     
 
 # Surfaces
 
-background = pygame.image.load('image/background.jpg').convert()      #convert for making images better for py
-enemy_stand = pygame.image.load('image/enemy.png').convert_alpha()
+background = pygame.image.load('E:\Projects\Pygame\\2D Runner\image\\background.jpg').convert()      #convert for making images better for py
+enemy_stand = pygame.image.load('E:\Projects\Pygame\\2D Runner\image\enemy.png').convert_alpha()
 enemy_stand = pygame.transform.rotozoom(enemy_stand,0,0.25)     #Transform surface
 button1 = test_font.render('  Play  ', True, 'Green' ).convert_alpha()
 button2 = test_font.render('  Exit  ', True, 'Red' ).convert_alpha()
