@@ -1,0 +1,35 @@
+colors wrt walls ( 55 x 55 )
+    RGB for paint BGR for CV2
+
+        below are ****BGR****
+
+    1. (255, 255, 255)
+    2.
+    3.
+    4.
+    5. (255, 0, 0)
+    6.
+    7.
+    8.
+    9. (0, 0, 255)
+    10.
+
+to-do:
+    Add more colors in engine and in level images
+    Add Sprites
+    Configure Movement
+    Door Animation
+    Add Collectibles
+    Configure Data wrt Collectibles
+    Save System
+    Load System
+    Enemy Sprites
+    Enemy Directional Movement
+    Enemy Triggers and Animation
+    Weapon 3 and 4 press down Animation
+    Ammo Configuration
+    Show Depth with walls using shaded images 
+    Working Menu, Pause Menu and Settings Menu
+    Death Animation and Screen
+    Level Clear Animation
+    Sound and Enhancements

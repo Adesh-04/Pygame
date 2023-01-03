@@ -18,6 +18,7 @@ class Game:
         self.screen = py.display.set_mode(RES)
         self.clock = py.time.Clock()
         self.delta = 1
+        
         self.global_trigger = False
         self.global_event = py.USEREVENT + 0
         py.time.set_timer(self.global_event, 40)
@@ -38,6 +39,7 @@ class Game:
         self.raycast.update()
         self.object_handler.update()
         self.weapon.update()
+        
         py.display.flip()
         self.delta = self.clock.tick(FPS)
         py.display.set_caption(f'{self.clock.get_fps() :.1f}')

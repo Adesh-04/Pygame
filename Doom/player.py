@@ -43,7 +43,6 @@ class Player:
                 self.shot = True
                 self.game.weapon.reloading = True
 
-    
     def movement(self):
         sin_a = math.sin(self.angle)
         cos_a = math.cos(self.angle)
