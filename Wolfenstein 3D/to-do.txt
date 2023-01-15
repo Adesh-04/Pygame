@@ -3,20 +3,33 @@ colors wrt walls ( 55 x 55 )
 
         below are ****BGR****
 
-    1. (255, 255, 255)
-    2.
+    1. (0, 0, 0) cobblestone
+    2. 
     3.
     4.
-    5. (255, 0, 0)
+    5. (255, 0, 0) blue cobblestone
     6.
     7.
     8.
-    9. (0, 0, 255)
+    9. (0, 0, 255) wood
     10.
 
+Colors for Collectibles ( BGR )
+    money : (0, 255, 255) -> yellow
+    ammo : (140, 70, 70) -> lightbluishpurple
+    health : (0, 255, 0) -> green
+    medical-kit : (127, 127, 127) -> darkgrey
+    noodles : (75, 150, 150) -> lightbrown
+    gold_key : (10, 200, 255) -> gold
+    other_key : (200, 170, 255) -> lightpink
+    face : (255, 0, 130) -> purple
+
+Colors for static_sprites ( BGR )
+
+
 to-do:
+    Add all Static Sprites
     Add more colors in engine and in level images
-    Add Sprites
     Configure Movement
     Door Animation
     Add Collectibles

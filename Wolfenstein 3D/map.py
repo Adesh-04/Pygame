@@ -4,11 +4,12 @@ from level_engine import *
 _ = False
 levelObj = Level("resources/levels/level1.png")
 
-level_1 = levelObj.get_pixels()
+level_1, collectible_pos = levelObj.get_pixels()
 
 class Map:
     def __init__(self, game):
         self.game = game
+        self.collectible_pos = collectible_pos
         self.mini_map = level_1
         self.curr_level = 1
         self.world_map = {}

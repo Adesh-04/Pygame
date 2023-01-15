@@ -11,6 +11,7 @@ class Player:
         self.angle = PLAYER_ANGLE
         self.lives = PLAYER_LIVES
         self.health = PLAYER_HEALTH
+        self.sprint_speed = PLAYER_SPRINT
         self.score = 0
 
         self.weapon_equip = 1
@@ -44,9 +45,10 @@ class Player:
 
     def single_fire_event(self, event):
         if event.type == py.MOUSEBUTTONDOWN:
-            if event.button == 1 and not self.shot and not self.game.weapon.reloading:
+            if event.button == 1 and not self.shot and not self.game.weapon.reloading and self.game.weapon.ammo > 0:
                 self.shot = True
                 self.game.weapon.reloading = True
+                self.game.weapon.ammo -= 1
 
     def draw(self):
         py.draw.line(self.game.screen,'yellow',
@@ -67,9 +69,14 @@ class Player:
         sin_a = math.sin(self.angle)
         cos_a = math.cos(self.angle)
         dx, dy = 0, 0
-        speed = PLAYER_SPEED * self.game.delta_time
+        
 
         keys = py.key.get_pressed()
+
+        if keys[K_LSHIFT]:
+            speed = self.sprint_speed * self.game.delta_time
+        else:
+            speed = PLAYER_SPEED * self.game.delta_time
 
         if keys[K_w]:
             dx += cos_a * speed
@@ -80,12 +87,12 @@ class Player:
             dy += -sin_a * speed
 
         if keys[K_a]:
-            dx += sin_a * speed
-            dy += -cos_a * speed
+            dx += sin_a * speed 
+            dy += -cos_a * speed 
 
         if keys[K_d]:
-            dx += -sin_a * speed
-            dy += cos_a * speed
+            dx += -sin_a * speed 
+            dy += cos_a * speed  
 
         if keys[K_LEFT]:
             self.angle -= self.game.delta_time * PLAYER_SPEED_ROT

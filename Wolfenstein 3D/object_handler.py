@@ -8,6 +8,13 @@ class ObjectHandler:
         add_sprite = self.add_sprite
 
         add_sprite(SpriteObject(game))
+        self.add_collectibles()
+
+    def add_collectibles(self):
+        for i, row in enumerate(self.game.map.collectible_pos):
+            for j, col in enumerate(row):
+                if col:
+                    self.add_sprite(SpriteObject(self.game,f"resources/sprites/static/collectibles/{col}.png", (j,i) ))
 
     def update(self):
         [sprite.update() for sprite in self.sprite_list]
