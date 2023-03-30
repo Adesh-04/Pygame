@@ -4,24 +4,35 @@ class Variables:
     def __init__(self, game):
         self.game = game
         self.last_buttton_pressed = ''
+        # For Dialgue Box
         self.talking = False
+        # For Start Menu
+        self.menu_open = False
         
     @property
-    def button(self):
+    def button(self) -> str: 
         return self.last_buttton_pressed
     @button.setter
-    def button(self, i):
+    def button(self, i : str):
         self.last_buttton_pressed = i
     @button.deleter
     def button(self):
         self.last_buttton_pressed = ''
 
     @property
-    def talk(self):
+    def talk(self) -> bool:
         return self.talking
-    @button.setter
-    def talk(self, i):
+    @talk.setter
+    def talk(self, i : bool):
         self.talking = i
+    
+    @property
+    def menu(self) -> bool:
+        return self.menu_open
+    @menu.setter
+    def menu(self, i ):
+        if self.menu_open == True: self.menu_open = False
+        else: self.menu_open = True
     
 
     def init_vars(self):
