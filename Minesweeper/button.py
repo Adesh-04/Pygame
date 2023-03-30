@@ -2,15 +2,18 @@ import pygame as py
 from settings import *
 from pygame.locals import *
 
-class Level():
-    def __init__(self, game):
+class Button():
+    def __init__(self, game, pos):
         self.game = game
-    
-    def update(self):
+        self.pos = pos
+        
+    def check_click(self, pos):
         pass
 
-    def draw(self):
-        pass
+
+    
+
+
 
 
 if __name__ == '__main__':

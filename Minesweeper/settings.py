@@ -1,5 +1,6 @@
+from win32api import GetSystemMetrics
 
-RES = WIDTH, HEIGHT = 1280, 640
+RES = WIDTH, HEIGHT = GetSystemMetrics(0)-300, GetSystemMetrics(1)-200
 
 CENTER = HALF_WIDTH, HALF_HEIGHT = WIDTH / 2 , HEIGHT / 2
 

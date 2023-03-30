@@ -1,0 +1,68 @@
+## Pokemin Emerald Inspired Pokemon Game (ROM HACK)
+## New Story and New Characters
+## May Update
+
+Keyboard Inputs - 
+    W, A, S, D or Arrow Keys  => Movement  (done)
+    Q => X (done)
+    E => Y  (done)
+    N => Start  (done)
+    M => Select (done)
+
+Player - (First Step)
+    Simple Sprite (done)
+    Movement (done)
+    Interaction
+    Dialogue Box (done)
+
+Menu - 
+    Player Info
+    Party Info
+    Pokemon Info(PokeDex) - (later)
+    Save - (later)
+    Load - (later)
+    Setting
+    Exit
+
+Map -
+    5 Towns with interactables
+    each town with pokeCenter, pokeMart, GYM, Special Building
+    each town connected via route with grass
+    door mechanism 
+
+Player Bag - 
+    Items 
+    HMs and TMs
+    Berry
+    Misc Items 
+
+Battle - (Main Step)
+    Battle Start
+    Poke Info and Hp
+    Menu contains -
+        Attack - Different Atk
+        Item   - Player Bag Menu
+        Poke   - Poke Info
+        Run    - Battle Exit
+
+Poke Info - (Hard Step)
+    Some Pokemon Info May Increase more than 50
+
+
+
+Enemy - (Last Step)
+    Distinguished Party Pokemons and Dialogues
+    Player Catch AI
+    Play AI
+        MoveChooser AI
+        ItemUser AI
+        ChangePoke AI
+
+
+
+
+
+
+Features - 
+    Time 
+    Pokemon Battle
