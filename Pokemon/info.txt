@@ -4,10 +4,10 @@
 
 Keyboard Inputs - (done)
     W, A, S, D or Arrow Keys  => Movement  (done)
-    Q => X (done)
-    E => Y  (done)
-    N => Start  (done)
-    M => Select (done)
+    C => X (done)
+    X => Y  (done)
+    Z => Start  (done)
+    F => Select (done)
 
 Player - (First Step)
     Simple Sprite (done)
@@ -15,17 +15,18 @@ Player - (First Step)
     Interaction
     Dialogue Box (done)
 
-Menu - 
+Menu - (done)
     Player Info
     Party Info
     Pokemon Info(PokeDex) - (later)
     Save - (later)
     Load - (later)
-    Setting
-    Exit
+    Setting - (later) 
+    Exit  (done)
 
 Player Bag - 
     Items 
+    PokeBall
     HMs and TMs
     Berry
     Misc Items 

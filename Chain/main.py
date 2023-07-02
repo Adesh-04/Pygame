@@ -1,8 +1,9 @@
 import pygame as py
 from sys import exit 
 from pygame.locals import *
+import time
 
-RES = WIDTH , HEIGHT = 860, 520
+RES = WIDTH , HEIGHT = 860, 620
 HALF_WIDTH, HALF_HEIGHT = WIDTH / 2, HEIGHT / 2
 
 class Game:
@@ -11,14 +12,50 @@ class Game:
         self.screen = py.display.set_mode(RES)
         py.display.set_caption("Chain-Reaction")
         self.font = py.font.SysFont('Ariel', 40)
-        self.menu, self.setting, self.game = True, False, False
-        
+
+        self.world_size = 10
+        self.playing = True
+        self.winner = 0
+        self.move = 0
+        self.box_size = 50
+        # circle radius
+        self.cr = 16
+        # player 1 or 2
+        self.player = 1
+        # player color 1 or 2
+        self.pc1 = 'blue'
+        self.pc2 = 'yellow'
+
+        self.world_rect = []
+        self.set_world()
+
+    def set_world(self):
+        for i1 in range(self.world_size):
+            for i2 in range(self.world_size):
+                rect_pos = py.Rect(180 + i2*self.box_size, 70 + i1*self.box_size, self.box_size, self.box_size)
+                corner = False
+                side = False
+                if (i1 == 0 or i1 == 9) and (i2 == 0 or i2 == 9):
+                    corner = True
+                if (i1 > 0 and i1 < 9) and (i2 == 0):
+                    side = True
+                if (i1 > 0 and i1 < 9) and (i2 == 9):
+                    side = True
+                if (i1 == 0) and (i2 > 0 and i2 < 9):
+                    side = True
+                if (i1 == 9) and (i2 > 0 and i2 < 9):
+                    side = True
+
+                self.world_rect.append({"rect" : rect_pos, "value" : 0, "corner": corner, "side": side, "color" : 'black'})
 
     def run(self):
         while True:
             self.check_events()
-            self.update()
-            self.draw()
+            if self.playing:
+                self.check_end()
+                self.draw()
+            else:
+                self.draw_end_screen()
 
             py.display.flip()
 
@@ -32,62 +69,144 @@ class Game:
             if py.key.get_pressed()[K_q]:
                 py.quit()
                 exit()
-            if event.type == MOUSEBUTTONDOWN:
-                if self.menu:
-                    if (HALF_WIDTH-100) <= self.mouse[0] <= (HALF_WIDTH+100) and (HALF_HEIGHT+50) <= self.mouse[1] <= (HALF_HEIGHT+100):
-                        py.quit()
-                        exit()
-                    elif (HALF_WIDTH-100) <= self.mouse[0] <= (HALF_WIDTH+100) and (HALF_HEIGHT-25) <= self.mouse[1] <= (HALF_HEIGHT+25):
-                        self.menu = False
-                        self.setting = True
+            elif event.type == MOUSEBUTTONDOWN:
+                if event.button == 1:  # Left mouse button
+                    mouse_x, mouse_y = py.mouse.get_pos()
+                    # Check if the mouse click is inside any rectangle
+                    for rect in self.world_rect:
+                        if rect["rect"].collidepoint(mouse_x, mouse_y):
+                            self.handleRect(rect)
+                            break
 
-                if self.setting:
-                    if (HALF_WIDTH-100) <= self.mouse[0] <= (HALF_WIDTH+100) and (HALF_HEIGHT+50) <= self.mouse[1] <= (HALF_HEIGHT+100):
-                        self.game = True
-                        self.setting = False
-                        self.size = 10
-                    elif (HALF_WIDTH-100) <= self.mouse[0] <= (HALF_WIDTH+100) and (HALF_HEIGHT-25) <= self.mouse[1] <= (HALF_HEIGHT+25):
-                        self.game = True
-                        self.setting = False
-                        self.size = 20
+    def handleRect(self, rect):
+        if rect["color"] == 'black':
+            if self.player == 1: rect["color"] = self.pc1
+            else: rect["color"] = self.pc2
+        
+        if rect["value"] == 0:
+            if self.player == 1: rect["color"] = self.pc1
+            else: rect["color"] = self.pc2
 
+        if self.player == 1 and rect["color"] == self.pc1:
+            if self.addValue(rect):
+                self.player = 2
+                self.move += 1
+        elif self.player == 2 and rect["color"] == self.pc2:
+            if self.addValue(rect):
+                self.player = 1
+                self.move += 1
 
-    def update(self):
-        pass
+    def addValue(self, rect):
+        if rect["corner"] and rect["value"] == 0:
+            rect["value"] += 1
+            return 1
+        elif rect["side"] and rect["value"] <= 1:
+            rect["value"] += 1
+            return 1
+        elif rect["corner"] == False and rect["side"] == False and rect["value"] <= 2:
+            rect["value"] += 1
+            return 1
+
+        # blasting conditions
+        if rect["corner"] and rect["value"] == 1:
+            self.blast(rect)
+            return 1
+        elif rect["side"] and rect["value"] == 2:
+            self.blast(rect)
+            return 1
+        elif rect["corner"] == False and rect["side"] == False and rect["value"] == 3:
+            self.blast(rect)
+            return 1
+
+        return 0
+        
+    def blast(self,rect):
+        rect["value"] = 0
+        self.addto_neighbours(rect)
+   
+    def addto_neighbours(self, rect):
+        ax, ay = rect["rect"].topleft
+
+        for orect in self.world_rect:
+            bx, by = orect["rect"].topleft
+            
+            if bx == ax - self.box_size and by == ay :
+                self.addValue(orect)
+                if self.player == 1: orect["color"] = self.pc1
+                else: orect["color"] = self.pc2
+            if bx == ax + self.box_size and by == ay :
+                self.addValue(orect)
+                if self.player == 1: orect["color"] = self.pc1
+                else: orect["color"] = self.pc2
+            if bx == ax and by == ay - self.box_size :
+                self.addValue(orect)
+                if self.player == 1: orect["color"] = self.pc1
+                else: orect["color"] = self.pc2
+            if bx == ax and by == ay + self.box_size :
+                self.addValue(orect)
+                if self.player == 1: orect["color"] = self.pc1
+                else: orect["color"] = self.pc2
 
     def draw(self):
-        self.screen.fill((75,75,75))
-        if self.menu:
-            self.draw_menu_template("Play", "Exit")
-        elif self.setting:
-            self.draw_menu_template("Small", "Medium")
+        self.screen.fill((0,0,0))
+        self.draw_world()
 
-    def draw_menu_template(self, t1, t2):
+        text = self.font.render(f"Player {self.player}'s Turn", True, (75,75,75))
+        text_rect = text.get_rect(center=(430, 30))
+        self.screen.blit(text, text_rect)
 
-        if (HALF_WIDTH-100) <= self.mouse[0] <= (HALF_WIDTH+100) and (HALF_HEIGHT+50) <= self.mouse[1] <= (HALF_HEIGHT+100):
-            py.draw.rect(self.screen, (100,100,100), (HALF_WIDTH - 100, HALF_HEIGHT + 50, 200, 50), 0, 20)
-        elif (HALF_WIDTH-100) <= self.mouse[0] <= (HALF_WIDTH+100) and (HALF_HEIGHT-25) <= self.mouse[1] <= (HALF_HEIGHT+25):
-            py.draw.rect(self.screen, (100,100,100), (HALF_WIDTH - 100, HALF_HEIGHT - 25, 200, 50), 0, 20)
+        text = self.font.render(f"Move : {self.move}", True, (0,75,75))
+        text_rect = text.get_rect(center=(80, 30))
+        self.screen.blit(text, text_rect)
 
-        py.draw.rect(self.screen, (0,0,0), (HALF_WIDTH - 100, HALF_HEIGHT - 25, 200, 50), 5, 20)
-        py.draw.rect(self.screen, (0,0,0), (HALF_WIDTH - 100, HALF_HEIGHT + 50, 200, 50), 5, 20)
+    def draw_world(self):
+        for rect in self.world_rect:
+            py.draw.rect(self.screen, 'red', rect["rect"], 1)
+            if rect["value"] == 1:
+                py.draw.circle(self.screen, rect["color"], rect["rect"].center, self.cr)                
+                py.draw.circle(self.screen, 'white', rect["rect"].center, self.cr, 1)                
+            if rect["value"] == 2:
+                py.draw.circle(self.screen, rect["color"], (rect["rect"].center[0] - self.cr/2, rect["rect"].center[1]), self.cr)                
+                py.draw.circle(self.screen, 'white', (rect["rect"].center[0] - self.cr/2, rect["rect"].center[1]), self.cr, 1)                
+                py.draw.circle(self.screen, rect["color"], (rect["rect"].center[0] + self.cr/2, rect["rect"].center[1]), self.cr)                
+                py.draw.circle(self.screen, 'white', (rect["rect"].center[0] + self.cr/2, rect["rect"].center[1]), self.cr, 1)                
+            if rect["value"] == 3:
+                py.draw.circle(self.screen, rect["color"], (rect["rect"].center[0] - self.cr/2, rect["rect"].center[1] + self.cr/3), self.cr)                
+                py.draw.circle(self.screen, 'white', (rect["rect"].center[0] - self.cr/2, rect["rect"].center[1] + self.cr/3), self.cr, 1)                
+                py.draw.circle(self.screen, rect["color"], (rect["rect"].center[0] + self.cr/2, rect["rect"].center[1] + self.cr/3), self.cr)                 
+                py.draw.circle(self.screen, 'white', (rect["rect"].center[0] + self.cr/2, rect["rect"].center[1] + self.cr/3), self.cr, 1)                 
+                py.draw.circle(self.screen, rect["color"], (rect["rect"].center[0], rect["rect"].center[1] - self.cr/2), self.cr)                 
+                py.draw.circle(self.screen, 'white', (rect["rect"].center[0], rect["rect"].center[1] - self.cr/2), self.cr, 1)                 
 
-        text1 = self.font.render(t1, True, "Black")
-        text2 = self.font.render(t2, True, "Black")
+    def check_end(self):
+        if self.move > 2:
+            p1_count = 0
+            p2_count = 0
+            for ele in self.world_rect:
+                if ele["color"] == 'blue':
+                    p1_count += 1
+                elif ele["color"] == 'yellow':
+                    p2_count += 1
 
-        text1_rect = text1.get_rect()
-        text2_rect = text2.get_rect()
+            if p1_count == 0:
+                self.winner = 1
+                self.playing = False
+            elif p2_count == 0:
+                self.winner = 2
+                self.playing = False
 
-        text1_rect.center = (HALF_WIDTH, HALF_HEIGHT)
-        text2_rect.center = (HALF_WIDTH, HALF_HEIGHT + 75)
+            print(p1_count, p2_count)
 
-        self.screen.blit(text1, text1_rect)
-        self.screen.blit(text2, text2_rect)
+    def draw_end_screen(self):
+        self.screen.fill((10,10,10))
 
-    
+        text = self.font.render(f"Player {self.winner} Won", True, (175,175,175))
+        text_rect = text.get_rect(center=(430, 290))
+        self.screen.blit(text, text_rect)       
 
 if __name__ == "__main__":
     game = Game()
     game.run()
+    time.sleep(1)
 
     
